@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
     :root {
       --bg: #faf8f5;
       --text: #2c1f12;
@@ -153,6 +153,7 @@
       margin: 0 auto;
       padding: 5rem 4rem;
       border-top: 1px solid var(--border);
+      scroll-margin-top: 80px;
     }
     .sec-head {
       display: flex;
@@ -211,8 +212,10 @@
 
     /* SKILLS */
     .skills-wrap {
+      scroll-margin-top: 80px;
       background: var(--surface);
       border-top: 1px solid var(--border);
+      scroll-margin-top: 80px;
     }
     .skills-inner {
       max-width: 1060px;
@@ -317,8 +320,10 @@
 
     /* PROJECTS */
     .projects-wrap {
+      scroll-margin-top: 80px;
       background: var(--surface);
       border-top: 1px solid var(--border);
+      scroll-margin-top: 80px;
     }
     .projects-inner {
       max-width: 1060px;
@@ -339,6 +344,7 @@
 
     /* CONTACT */
     .contact-wrap {
+      scroll-margin-top: 80px;
       border-top: 1px solid var(--border);
     }
     .contact-inner {
@@ -529,10 +535,10 @@
 <nav>
   <span class="nav-name">Zaafir Adeoti</span>
   <ul class="nav-links">
-    <li><a href="#experience" data-en="Experience" data-fr="Expérience">Experience</a></li>
-    <li><a href="#skills" data-en="Skills" data-fr="Compétences">Skills</a></li>
-    <li><a href="#education" data-en="Education" data-fr="Formation">Education</a></li>
-    <li><a href="#projects" data-en="Projects" data-fr="Projets">Projects</a></li>
+    <li><a href="#experience" data-en="Experience" data-fr="Expérience" onclick="goTo('experience');return false;">Experience</a></li>
+    <li><a href="#skills" data-en="Skills" data-fr="Compétences" onclick="goTo('skills');return false;">Skills</a></li>
+    <li><a href="#education" data-en="Education" data-fr="Formation" onclick="goTo('education');return false;">Education</a></li>
+    <li><a href="#projects" data-en="Projects" data-fr="Projets" onclick="goTo('projects');return false;">Projects</a></li>
   </ul>
   <button class="lang-btn" onclick="toggleLang()">FR</button>
 </nav>
@@ -545,7 +551,7 @@
       I'm a data analyst who believes the best dashboards tell a story. Certified in Power BI (PL-300), a Computer Science and Software Engineering graduate from UQAM, currently completing a DESS in Business Intelligence at HEC Montréal, I've built BI solutions from scratch, processing millions of data points across complex environments. Precise by training, creative by nature. When I'm not working with data, I'm behind a camera, crafting cinematic visuals that reflect that same eye for detail.
     </p>
     <div class="hero-links">
-      <a href="#experience" class="link-primary" data-en="View experience" data-fr="Mon parcours">View experience</a>
+      <a href="#experience" class="link-primary" data-en="View experience" data-fr="Mon parcours" onclick="goTo('experience');return false;">View experience</a>
     </div>
   </div>
   <div class="hero-photo">
@@ -709,6 +715,15 @@
 </footer>
 
 <script>
+  // ── NAVIGATION ──
+  function goTo(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var navH = document.querySelector('nav').offsetHeight;
+    var top = el.getBoundingClientRect().top + window.pageYOffset - navH - 8;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+
   // ── SCROLL REVEAL with stagger ──
   const revealEls = document.querySelectorAll('.reveal');
   const revealObs = new IntersectionObserver((entries) => {
@@ -725,25 +740,10 @@
     revealObs.observe(el);
   });
 
-  // ── SMOOTH SCROLL with page-transition overlay ──
+  // ── SMOOTH SCROLL ──
   const overlay = document.getElementById('page-overlay');
 
-  function smoothNavigate(targetId) {
-    const target = document.querySelector(targetId);
-    if (!target) return;
-    overlay.classList.add('flash');
-    setTimeout(() => {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      overlay.classList.remove('flash');
-    }, 300);
-  }
-
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      smoothNavigate(link.getAttribute('href'));
-    });
-  });
+  // navigation handled by goTo()
 
   // ── NAV ACTIVE HIGHLIGHT ──
   const sections = document.querySelectorAll('div[id], section[id]');
